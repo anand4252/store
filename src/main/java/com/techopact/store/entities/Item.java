@@ -8,12 +8,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -36,8 +39,10 @@ public class Item {
   private int quantity;
   @JsonIgnore
   private boolean priceIncreased;
+
   @JsonIgnore
-  private String lastViewedTime;
+  @ElementCollection
+  private List<LocalDateTime> lastViewedTimes = new FixedCircularArrayList<>(10);;
 
   @Override
   public boolean equals(Object o) {
