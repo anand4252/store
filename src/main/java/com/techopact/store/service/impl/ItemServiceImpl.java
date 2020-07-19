@@ -37,6 +37,7 @@ public class ItemServiceImpl implements ItemService {
             return ItemStatus.OUT_OF_STOCK;
         }
         item.setQuantity(--quantity);
+        this.itemRepository.save(item);
         //Call an API to place the order
         return ItemStatus.ORDER_PLACED;
     }
