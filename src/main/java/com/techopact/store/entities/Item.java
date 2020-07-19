@@ -14,7 +14,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -34,7 +33,7 @@ public class Item {
   private Long id;
   private String name;
   private String description;
-  private BigDecimal price;
+  private double price;
   @JsonIgnore
   private int quantity;
   @JsonIgnore
@@ -42,7 +41,7 @@ public class Item {
 
   @JsonIgnore
   @ElementCollection
-  private List<LocalDateTime> lastViewedTimes = new FixedCircularArrayList<>(10);;
+  private List<LocalDateTime> lastViewedTimes;
 
   @Override
   public boolean equals(Object o) {
@@ -51,7 +50,7 @@ public class Item {
     Item item = (Item) o;
     return name.equals(item.name) &&
             Objects.equals(description, item.description) &&
-            price.equals(item.price);
+            price == item.price;
   }
 
   @Override

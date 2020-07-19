@@ -12,7 +12,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -40,7 +39,7 @@ public class ItemsIntegrationTest {
         final int initialInventorySize = 4;
         ResponseEntity<List<Item>> response =
                 restTemplate.exchange(BASE_URL + port + "/store/v1/items",
-                        HttpMethod.GET, null, new ParameterizedTypeReference<List<Item>>() {
+                        HttpMethod.GET, null, new ParameterizedTypeReference<>() {
                         });
         List<Item> actualItems = response.getBody();
 
@@ -57,7 +56,7 @@ public class ItemsIntegrationTest {
         final Item expectedItem = Item.builder()
                 .name("Protein bar")
                 .description("28gm protein bar")
-                .price(new BigDecimal("20"))
+                .price(20)
                 .build();
 
         ResponseEntity<Item> response = restTemplate.getForEntity(
@@ -78,7 +77,7 @@ public class ItemsIntegrationTest {
                 () -> assertNotNull(emptyItem),
                 () -> assertNull(emptyItem.getName()),
                 () -> assertNull(emptyItem.getDescription()),
-                () -> assertNull(emptyItem.getPrice()),
+                () -> assertEquals(0, emptyItem.getPrice()),
                 () -> assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode())
         );
     }
