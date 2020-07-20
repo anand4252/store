@@ -8,8 +8,8 @@ There are 3 parameters to consider:
 - window period
 - price percentage
 
-#####NOTE: The above fields are configurable and can be passed while running the app. 
-#####Logic: 
+***NOTE:*** The above fields are configurable and can be passed while running the app. 
+***Logic:*** 
 - For an item, when the number of hits is more than the _hit limit_ parameter in a 
 given _window period_ then the price of the item would be increased by _price percentage_
 - For an item, when the number of hits is less than the _hit limit_ parameter in a 
@@ -30,14 +30,15 @@ then its price will be decreased by _price percentage_
 - Used Spring security for Authentication and JWT for Authorization. 
 - The username and password are hardcoded.
 - Returns a _JWT_ which should be used to access other endpoints
-#####Request:
+
+***Request:***
 ```bash
 {
     "username":"anand",
     "password":"pass5"
 }
 ```
-#####Sample Response:
+***Sample Response:***
 ```bash
 {
     "jwt": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbmFuZCIsImV4cCI6MTU5NTI5MDY5OCwiaWF0IjoxNTk1MjU0Njk4fQ.y6YyqE1x1f_zPGEuuJGZEFYCqtVeH1sMh2TiKTg5TJ4"
@@ -47,7 +48,8 @@ then its price will be decreased by _price percentage_
 #### GET /store/v1/items
 - Returns all the items in the store. 
 - A valid JWT should be passed in the request header.
-#####Sample Response:
+
+***Sample Response:***
 ```
 [
     {
@@ -75,7 +77,8 @@ then its price will be decreased by _price percentage_
 #### GET /store/v1/item/{id}
 - Return the item with the id mentioned in the URL.
 - A valid JWT should be passed in the request header.
-#####Sample Response:
+
+***Sample Response:***
 ```
 {
     "name": "Protein bar",
@@ -91,7 +94,8 @@ then its price will be decreased by _price percentage_
     - INVALID
 - URL holds the item id.    
 - A valid JWT should be passed in the request header.
-#####Sample Response:
+
+***Sample Response:***
 ```
 ORDER_PLACED
 ```
