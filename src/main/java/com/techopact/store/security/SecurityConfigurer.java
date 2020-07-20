@@ -1,8 +1,8 @@
 package com.techopact.store.security;
 
 import com.techopact.store.utils.JwtRequestFilter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -20,14 +20,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  *
  */
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-//	@Qualifier("storeUserDetailsServiceImpl")
-	private UserDetailsService storeUserDetailsServiceImpl;
-
-	@Autowired
-	private JwtRequestFilter jwtRequestFilter;
+	private final UserDetailsService storeUserDetailsServiceImpl;
+	private final JwtRequestFilter jwtRequestFilter;
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -50,11 +47,9 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 		httpSecurity.csrf().disable()
 				.authorizeRequests().antMatchers("/store/login").permitAll().
 						anyRequest().authenticated().and().
-//						and().
 						exceptionHandling().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-
 	}
 
 }

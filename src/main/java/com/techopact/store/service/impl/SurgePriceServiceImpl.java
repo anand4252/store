@@ -66,9 +66,9 @@ public class SurgePriceServiceImpl implements SurgePriceService {
         boolean shouldDecreasePrice;
         final LocalDateTime firstDateTime = getFirstDateTime(item);
         final LocalDateTime currentDateTime = LocalDateTime.now();
-        shouldDecreasePrice = item.getLastViewedTimes().size() == 2 //TODO Externalize
+        shouldDecreasePrice = item.getLastViewedTimes().size() == storeProperties.getViewLimit()
                 && item.isPriceIncreased()
-                && firstDateTime.plusHours(1).isBefore(currentDateTime);
+                && firstDateTime.plusMinutes(storeProperties.getWindowPeriodInMinutes()).isBefore(currentDateTime);
         return shouldDecreasePrice;
     }
 
@@ -76,9 +76,9 @@ public class SurgePriceServiceImpl implements SurgePriceService {
         boolean shouldIncreasePrice;
         final LocalDateTime firstDateTime = getFirstDateTime(item);
         final LocalDateTime currentDateTime = LocalDateTime.now();
-        shouldIncreasePrice = item.getLastViewedTimes().size() == 2 //TODO Externalize
+        shouldIncreasePrice = item.getLastViewedTimes().size() == storeProperties.getViewLimit()
                 && !item.isPriceIncreased()
-                && firstDateTime.plusHours(1).isAfter(currentDateTime);
+                && firstDateTime.plusMinutes(storeProperties.getWindowPeriodInMinutes()).isAfter(currentDateTime);
         return shouldIncreasePrice;
     }
 

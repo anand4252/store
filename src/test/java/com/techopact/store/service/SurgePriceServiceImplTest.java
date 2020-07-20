@@ -48,6 +48,7 @@ public class SurgePriceServiceImplTest {
         givenItems.add(item);
 
         when(storeProperties.getPercentageIncrease()).thenReturn( 10d);
+        when(storeProperties.getViewLimit()).thenReturn(2);
 
         final List<Item> updatedPriceItems = surgePriceService.calculateSurgePrice(givenItems);
 
@@ -70,6 +71,8 @@ public class SurgePriceServiceImplTest {
         givenItems.add(item);
 
         when(storeProperties.getPercentageIncrease()).thenReturn(10d);
+        when(storeProperties.getViewLimit()).thenReturn(2);
+        when(storeProperties.getWindowPeriodInMinutes()).thenReturn(60);
 
         final List<Item> updatedPriceItems = surgePriceService.calculateSurgePrice(givenItems);
 
@@ -110,6 +113,7 @@ public class SurgePriceServiceImplTest {
         givenItems.add(item);
 
         when(storeProperties.getPercentageIncrease()).thenReturn(10d);
+        when(storeProperties.getViewLimit()).thenReturn(2);
 
         final List<Item> updatedPriceItems = surgePriceService.calculateSurgePrice(givenItems);
 
@@ -132,6 +136,8 @@ public class SurgePriceServiceImplTest {
         givenItems.add(item);
 
         when(storeProperties.getPercentageIncrease()).thenReturn(10d);
+        when(storeProperties.getViewLimit()).thenReturn(2);
+        when(storeProperties.getWindowPeriodInMinutes()).thenReturn(60);
 
         final List<Item> updatedPriceItems = surgePriceService.calculateSurgePrice(givenItems);
 

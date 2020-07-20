@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "store")
 public class StoreProperties {
-//    private Integer viewLimit;
+    private int viewLimit;
+    private int windowPeriodInMinutes;
     private double percentageIncrease;
+    private String jwtSecret;
 }
