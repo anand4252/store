@@ -122,14 +122,14 @@ mvn clean package
 ```
 
 ## Instructions to Run
-####Using plain java -jar command.
+#### Using plain java -jar command.
 First, change to _target_ directory and then run the following command.
 
 ```bash
 java -jar store-0.0.1-SNAPSHOT.jar
 ```
 
-####Using [maven](https://maven.apache.org/) command from the _root_ directory.
+#### Using [maven](https://maven.apache.org/) command from the _root_ directory.
 
 ```bash
 mvn spring-boot:run
