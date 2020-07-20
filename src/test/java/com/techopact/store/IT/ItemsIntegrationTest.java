@@ -1,16 +1,21 @@
 package com.techopact.store.IT;
 
 import com.techopact.store.entities.Item;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -23,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DisplayName("Integration Test Suite")
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ItemsIntegrationTest {
 
     @Autowired
@@ -33,13 +39,22 @@ public class ItemsIntegrationTest {
     @LocalServerPort
     private String port;
 
+    private MultiValueMap<String, String> headers;
+
+    @BeforeAll
+    public void setUp() {
+        headers = new LinkedMultiValueMap<>();
+        headers.add("Content-Type", "application/json");
+        headers.add("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbmFuZCIsImV4cCI6MTU5NTI1NDU2NywiaWF0IjoxNTk1MjE4NTY3fQ.AEUlF8asU8j8VWVfVqnLWUmCpkNn03QV7ns3AKownow");
+    }
+
 
     @Test
     void when_items_endpoint_invoked_should_return_allItems() {
         final int initialInventorySize = 4;
         ResponseEntity<List<Item>> response =
                 restTemplate.exchange(BASE_URL + port + "/store/v1/items",
-                        HttpMethod.GET, null, new ParameterizedTypeReference<>() {
+                        HttpMethod.GET, new HttpEntity<>(headers), new ParameterizedTypeReference<>() {
                         });
         List<Item> actualItems = response.getBody();
 
@@ -59,8 +74,11 @@ public class ItemsIntegrationTest {
                 .price(20)
                 .build();
 
-        ResponseEntity<Item> response = restTemplate.getForEntity(
-                new URL(BASE_URL + port + "/store/v1/item/2").toString(), Item.class);
+        ResponseEntity<Item> response =
+                restTemplate.exchange(BASE_URL + port + "/store/v1/item/2",
+                        HttpMethod.GET, new HttpEntity<>(headers), new ParameterizedTypeReference<>() {
+                        });
+
         assertAll(
                 () -> assertEquals(expectedItem, response.getBody()),
                 () -> assertEquals(HttpStatus.OK, response.getStatusCode())
@@ -68,10 +86,12 @@ public class ItemsIntegrationTest {
     }
 
     @Test
-    void when_invalid_itemId_is_passed_should_return_404_status_code() throws MalformedURLException {
+    void when_invalid_itemId_is_passed_should_return_404_status_code() {
+        ResponseEntity<Item> response =
+                restTemplate.exchange(BASE_URL + port + "/store/v1/item/200",
+                        HttpMethod.GET, new HttpEntity<>(headers), new ParameterizedTypeReference<>() {
+                        });
 
-        ResponseEntity<Item> response = restTemplate.getForEntity(
-                new URL(BASE_URL + port + "/store/v1/item/200").toString(), Item.class);
         final Item emptyItem = response.getBody();
         assertAll(
                 () -> assertNotNull(emptyItem),
@@ -87,7 +107,7 @@ public class ItemsIntegrationTest {
         final String expectedMessage = "ORDER_PLACED";
 
         ResponseEntity<String> response = restTemplate.exchange(
-                new URL(BASE_URL + port + "/store/v1/item/2/order").toString(), HttpMethod.PUT, null, String.class);
+                new URL(BASE_URL + port + "/store/v1/item/2/order").toString(), HttpMethod.PUT, new HttpEntity<>(headers), String.class);
         assertAll(
                 () -> assertEquals(expectedMessage, response.getBody()),
                 () -> assertEquals(HttpStatus.OK, response.getStatusCode())
@@ -99,7 +119,7 @@ public class ItemsIntegrationTest {
         final String expectedMessage = "OUT_OF_STOCK";
 
         ResponseEntity<String> response = restTemplate.exchange(
-                new URL(BASE_URL + port + "/store/v1/item/4/order").toString(), HttpMethod.PUT, null, String.class);
+                new URL(BASE_URL + port + "/store/v1/item/4/order").toString(), HttpMethod.PUT, new HttpEntity<>(headers), String.class);
         assertAll(
                 () -> assertEquals(expectedMessage, response.getBody()),
                 () -> assertEquals(HttpStatus.OK, response.getStatusCode())
@@ -111,7 +131,7 @@ public class ItemsIntegrationTest {
         final String expectedMessage = "INVALID";
 
         ResponseEntity<String> response = restTemplate.exchange(
-                new URL(BASE_URL + port + "/store/v1/item/20/order").toString(), HttpMethod.PUT, null, String.class);
+                new URL(BASE_URL + port + "/store/v1/item/20/order").toString(), HttpMethod.PUT, new HttpEntity<>(headers), String.class);
         assertAll(
                 () -> assertEquals(expectedMessage, response.getBody()),
                 () -> assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode())
