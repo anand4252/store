@@ -93,7 +93,7 @@ public class SurgePriceServiceImpl implements SurgePriceService {
     private void updateLastViewedTime(List<Item> items){
         List<Item> alteredItems = new ArrayList<>(items);
         for(Item item : alteredItems){
-            List<LocalDateTime> fixedCircularArrayList =  new FixedCircularArrayList<>(2);
+            List<LocalDateTime> fixedCircularArrayList =  new FixedCircularArrayList<>(storeProperties.getViewLimit());
             fixedCircularArrayList.addAll(item.getLastViewedTimes());
 
             fixedCircularArrayList.add(LocalDateTime.now());
