@@ -139,7 +139,15 @@ The app should run in the port 8000. To change the port use the following comman
 ```bash
 java -jar store-0.0.1-SNAPSHOT.jar --server.port=9001 
 ```
-
+#### Using [docker](https://docs.docker.com/) 
+***Command to Build:***
+```bash
+docker build --tag store:1.0 .
+```
+***Command to Run:***
+```bash
+docker run --publish 8000:8000 --name store_container store:1.0
+```
 
 ## Improvements
 - The user details to login are hard coded. The user details can be maintained in the DB.
