@@ -14,4 +14,5 @@ public class StoreProperties {
     private int windowPeriodInMinutes;
     private double percentageIncrease;
     private String jwtSecret;
+    private int jwtExpirationHours;
 }

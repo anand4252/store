@@ -28,14 +28,17 @@ then its price will be decreased by _price percentage_
 #### POST /store/login
 - This is the first endpoint to be invoked. 
 - Used Spring security for Authentication and JWT for Authorization. 
-- The username and password are hardcoded.
 - Returns a _JWT_ which should be used to access other endpoints
+- SAMPLE username/password 
+    - anand/anand
+    - aaron/aaron
+    - aidan/aaron
 
 ***Request:***
 ```bash
 {
-    "username":"anand",
-    "password":"pass5"
+    "username":"aaron",
+    "password":"aaron"
 }
 ```
 ***Sample Response:***
@@ -44,7 +47,23 @@ then its price will be decreased by _price percentage_
     "jwt": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbmFuZCIsImV4cCI6MTU5NTI5MDY5OCwiaWF0IjoxNTk1MjU0Njk4fQ.y6YyqE1x1f_zPGEuuJGZEFYCqtVeH1sMh2TiKTg5TJ4"
 }
 ```
+#### POST /store/register
+- This endpoint can be used to register new users. 
+- Username already present in the database should not be registered again.
+(will handle this scenario in the code later)
 
+
+***Request:***
+```bash
+{
+    "username":"test1",
+    "password":"pass1"
+}
+```
+***Sample Response:***
+```bash
+User Registered successfully
+```
 #### GET /store/v1/items
 - Returns all the items in the store. 
 - A valid JWT should be passed in the request header.

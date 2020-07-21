@@ -1,13 +1,19 @@
 package com.techopact.store.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.io.Serializable;
 
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
+@Setter
+@ToString
 public class AuthenticationResponse implements Serializable {
-    private final String jwt;
+    private String jwt;
 
 }

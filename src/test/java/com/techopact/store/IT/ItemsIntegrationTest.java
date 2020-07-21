@@ -1,5 +1,6 @@
 package com.techopact.store.IT;
 
+import com.techopact.store.entities.AuthenticationResponse;
 import com.techopact.store.entities.Item;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -16,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -42,10 +44,22 @@ public class ItemsIntegrationTest {
     private MultiValueMap<String, String> headers;
 
     @BeforeAll
-    public void setUp() {
+    public void setUp() throws MalformedURLException {
+        String authorizationJwtString = "Bearer " + generateJwt();
         headers = new LinkedMultiValueMap<>();
         headers.add("Content-Type", "application/json");
-        headers.add("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbmFuZCIsImV4cCI6MTU5NTI1NDU2NywiaWF0IjoxNTk1MjE4NTY3fQ.AEUlF8asU8j8VWVfVqnLWUmCpkNn03QV7ns3AKownow");
+        headers.add("Authorization", authorizationJwtString);
+    }
+
+    private String generateJwt() throws MalformedURLException {
+        MultiValueMap<String, String> header = new LinkedMultiValueMap<>();
+        header.add("Content-Type", "application/json");
+
+
+        ResponseEntity<AuthenticationResponse> response = restTemplate.exchange(
+                new URL(BASE_URL + port + "/store/login").toString(), HttpMethod.POST, new HttpEntity<>("{\"username\":\"anand\", \"password\":\"anand\"}", header), AuthenticationResponse.class);
+        AuthenticationResponse requestBody = response.getBody();
+        return StringUtils.isEmpty(requestBody) ? "" : requestBody.getJwt();
     }
 
 
